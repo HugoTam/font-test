@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<title>OK记|</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<meta content="yes" name="apple-mobile-web-app-capable">
+	<meta content="black" name="apple-mobile-web-app-status-bar-style">
+</head>
+<style>
+	.okmemo{
+		margin: 0 10px;
+	}
+
+	.header{
+    	padding-top: 90px;
+    	padding-bottom: 130px;
+		font-family: "PingFang SC";
+	}
+
+	.title{
+		margin-bottom: 0px;
+    	padding-top: 34px;
+		font-size: 26px;
+		line-height: 32px;
+		color: #404040;
+	}
+
+	#srcArea{
+		font-size: 14px;
+		line-height: 1.8em;
+		text-transform: uppercase;
+	}
+
+	#srcArea .src{
+		/*text-decoration: none;*/
+		font-family: "PingFang SC";
+	}
+
+	.div-line{
+		color: #c0c0c0;
+		margin: 0 12px;
+	}
+
+	.first-src .src{
+		display: inline-block;
+	}
+
+	.src{
+		color: #c0c0c0;
+		display: block;
+	}
+
+	.content{
+		line-height: 26px;
+		color: #404040;
+		font-family: "PingFang SC";
+	}
+
+	.content a{
+		color: #404040;
+		font-family: "PingFang SC";
+	}
+
+	.content img{
+		margin: 6px 0;
+		max-width: 100%;
+	}
+
+	.ad-content{
+		position: relative;
+		text-align: center;
+    	margin-top: 30px;
+    	margin-bottom: 120px;
+    	color: #e0e0e0;
+	}
+
+	.ad-content .sologan{
+		background: white;
+		position: relative;
+		text-align: center;
+		display: inline-block;
+		padding: 0 8px;
+		font-size: 14px;
+	}
+
+	.ad-content .line{
+	    position: absolute;
+	    top: 10px;
+	    height: 1px;
+	    width: 100%;
+	    border-top: 1px solid #eaeaea;
+	}
+
+	.more-src-btn{
+		color: #c0c0c0;
+	}
+
+	.more-link-area{
+		display: none;
+	}
+
+	.more-link-area.show{
+		display: block;
+	}
+
+
+
+
+</style>
+<body>
+	<div class="okmemo">
+		<div class="header" id="header">
+			<h2 class="title"></h2>
+		</div>
+		<!-- 贴纸内容放里面，文字、图片...... -->
+		<div class="content" id="okmemoCon"></div>
+		<!-- 广告区、sologan等 -->
+		<div class="ad-content" id="adCon">
+			<div class="line"></div>
+			<div class="sologan"> 全星球最快 碎片化知识 收集工具 </div>	
+		</div>
+	<div>
+	<script>
+		// var data = {_PAPER_DATA_};
+		// if(typeof data != "object"){
+		// 	data = JSON.parse(data);
+		// }
+
+		var data = {
+			title: "经验之谈！称职的用户体验设计师必须注意的九件事情",
+			content: "很多传统行业目前正在面临转型，开始在线上寻求新的发展机遇，并通过网站改版升级提高竞争力。本文将从行业中的网页设计角度，与大家分享几个国内外著名钢铁公司的网站案例。从案例中大家将会发现，即使在同一个行业里，国内外网站的设计也存在着很大差异，希望这些分享能给设计师们带来一些灵感。提到钢铁行业的公司网站，一些人的脑海中可能瞬间浮现传统网站的常见样式，特征主要是各网站相似程度高，给人感觉使用了同一个模板做出来的，<a href='https://baidu.com'>https://baidu.com</a>显得过时、保守。是否真的是这样？我们先看国外钢铁行业网站案例。",
+			source: "https://baidu.com,https://okay.do"
+		}
+
+
+		window.onload = function(){
+
+			var header = document.getElementById("header");
+			var con = document.getElementById("okmemoCon");
+			var adCon = document.getElementById("adCon");
+
+			// 修改标题
+			if(data.title){
+				document.title = "OK记|" + data.title;
+				var title = header.getElementsByClassName("title")[0];
+				title.innerText = data.title;
+			}
+
+			// 插入内容
+			if(data.content){
+				con.innerHTML = data.content;
+			}
+
+
+			// 插入source
+			if(data.source){
+				var source = data.source.split(",");
+				console.log(source);
+				var srcArea = document.createElement("div");
+				srcArea.setAttribute("id","srcArea");
+				header.appendChild(srcArea);
+
+				// 有更多链接
+				if(source.length && source.length > 1){
+
+					srcArea.innerHTML = "<span class='first-src' id='firstSrc'></span>"
+										+ "<span class='more-src' id='moreSrcArea'>"
+											+ "<span class='div-line'>| </span>"
+											+ "<span><a id='moreSrcBtn' class='more-src-btn' href='#'>更多</a></span>"
+											+ "<div class='more-link-area' id='moreLinks'>"
+											+ "</div>"
+										+ "</span>";
+
+					var links = [];
+					var moreLinks = document.getElementById("moreLinks"),
+						firstLink = document.getElementById("firstSrc");
+
+					for(i=0;i<source.length;i++){
+
+						var link = document.createElement("a");
+						link.classList.add("src");
+						link.href = source[i];
+						link.text = link.host;
+						links.push(link);
+
+						if(i===0){
+							firstLink.appendChild(link);
+						}else if(i>0){
+							moreLinks.appendChild(link);
+						}
+					}
+
+
+					// 点击更多
+					var moreSrcBtn = document.getElementById("moreSrcBtn");
+					moreSrcBtn.addEventListener("click",function(event){
+						event.preventDefault();
+						moreLinks.classList.toggle("show");
+
+						if(moreLinks.classList.contains("show")){
+							moreSrcBtn.text = "隐藏";
+						}else{
+							moreSrcBtn.text = "更多";
+						}
+
+
+					}, false);
+
+				}else if(source.length && source.length ==1){
+					var link = document.createElement("a");
+					link.href = source[0];
+					link.text = link.host;
+					srcArea.innerHTML = "<span class='first-src'>"+ "<a href="+link.href+" class='src'>"+link.host+"</a>" +"</span>";
+
+				}
+
+			}
+
+
+
+			// 计算需要的高度
+			headerH = header.offsetHeight;
+			conH = con.offsetHeight;
+			calHeight = headerH + conH;
+
+			// 短文章拉开距离让广告区放第二版
+			var adDisTop = function(el,calH, minAdMT){
+				var winHeight;
+				if(window.innerHeight){
+					winHeight = window.innerHeight;
+				}else if((document.body) && (document.body.clientHeight)){
+					winHeight = document.body.clientHeight;
+				}
+
+				console.log(winHeight);
+				console.log(calH);
+
+				var disTop = winHeight - calH;
+				console.log(disTop);
+				// 判断是否长文
+				if(disTop > minAdMT){
+					el.style.marginTop = disTop + "px";
+				}
+
+
+			}
+
+			adDisTop(adCon,calHeight, 30);
+		}
+
+
+
+	</script>
+</body>
+</html>
